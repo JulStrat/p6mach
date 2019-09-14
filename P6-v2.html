@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head><meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>P6, v2.0 &amp; v3.0</title></head>
+<body>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial; text-align: center;"><font size="+2">
+Pascal P6, v2.0 &amp; v3.0</font></p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;" align="justify">
+<span style="font-weight: normal;">My
+daughter, who has studied Japanese, tells me that the biggest problem
+for an artist painting bamboo is to know when to </span><i><span style="font-weight: normal;">stop
+painting the bamboo</span></i><span style="font-weight: normal;">.
+This applies to software releases. I already have a long wish list
+for the v2.0 release of Pascal P6. These will make substantial
+improvements to the compiler and interpreter, but will add no
+extensions to the language.<a class="sdfootnoteanc" name="sdfootnote1anc" href="#sdfootnote1sym"><sup>1</sup></a>
+Pascal P6 v2.0 will retain its close adherence to the ISO 7185
+standard at level 1. The &#8220;wish&#8221; list for this future release is:</span></p>
+<ol style="font-family: Arial;"><li><p style="margin-top: 0.04in; margin-bottom: 0in; font-weight: normal;" align="justify">
+	Make it easier to
+	implement different varieties of the same virtual machine. For
+	instance, define the 'word' used for integer as being either 16 or
+	32 bits. Make all stack operations, and the most common load and
+	store instructions, dependent on this definition of 'word'. Gather
+	together the constant declarations that determine the size of the
+	virtual machine &#8220;word&#8221; and therefore the default integer size;
+	also the default size for the 'real' data type. Also gather the
+	declarations that determine the code address and data address sizes.
+	By changing these constants, a custom virtual machine can be quickly
+	realized, with just a simple re-compile of the compiler and
+	interpreter.</p>
+	</li><li><p style="margin-top: 0.04in; margin-bottom: 0in; font-weight: normal;" align="justify">
+	Invert the stack and
+	heap, so that the heap grows upward toward the stack, which grows
+	downward. This is somewhat arbitrary, with no inherent efficiency
+	advantage to either method. Burroughs was the last major
+	manufacturer to implement stacks which grow toward higher addresses.
+	Pretty much everyone else has them growing toward lower addresses.
+	Inverting them now makes the virtual machine, and consequent
+	addressing protocols, closer to the target architectures that we
+	will eventually be generating code for, and so makes that
+	translation to the target's native assembly language that much
+	simpler.</p>
+	</li><li><p style="margin-top: 0.04in; margin-bottom: 0in; font-weight: normal;" align="justify">
+	Implement PACKED records
+	and arrays (including conformant array parameters, of course). This
+	will allow Pascal to manipulate data structures used by operating
+	systems and device drivers, etc.</p>
+	</li><li><p style="margin-top: 0.04in; margin-bottom: 0in; font-weight: normal;" align="justify">
+	Allow a greater latitude
+	in the implementation of the set data type, e.g., allow SET OF
+	0..maxint, or SET OF -5..+5.</p>
+	</li><li><p style="margin-top: 0.04in; margin-bottom: 0in; font-weight: normal;" align="justify">
+	Allow more options for
+	checking for errors at run time, for example, for (a) uninitialized
+	data, and (b) consistency between variant fields and their
+	selectors.</p>
+	</li><li><p style="margin-top: 0.04in; margin-bottom: 0in; font-weight: normal;" align="justify">
+	Have the compiler put
+	out more informational messages, e.g., constants, types, variables
+	or procedures declared but not used.</p>
+	</li><li><p style="margin-top: 0.04in; margin-bottom: 0in; font-weight: normal;" align="justify">
+	Make the compiler more
+	robust in the presence of unexpected input, by parsing constructs
+	from Extended Pascal and issuing error messages that make more
+	sense. (A lot of this has already been done in v1.0.)</p>
+	</li><li><p style="margin-top: 0.04in; margin-bottom: 0in; font-weight: normal;" align="justify">
+	Make the compiler issue
+	warnings for the use of identifiers (e.g., 'module') that are legal
+	in ISO 7185, but which are reserved in ISO 10206 (controlled by a $
+	compiler switch).</p>
+	</li><li><p style="margin-top: 0.04in; margin-bottom: 0in; font-weight: normal;" align="justify">
+	Re-code the interpreter
+	so that it can be compiled by either the GNU Pascal compiler (gpc)
+	or Free Pascal (fpc).</p>
+</li></ol>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-weight: normal; font-family: Arial;" align="justify">
+Which of these items will
+make it into the v2.0 release, and which will not is a function of
+how much time it takes, as well as the &#8220;painting bamboo&#8221;
+criterion.</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-weight: normal; font-family: Arial;" align="justify">
+If there is a Pascal P6
+v3.0 release (it will depend on the amount of interest shown between now and the v2.0 release),
+it will be connecting to the <a href="http://llvm.org/">LLVM</a> tool
+chain, to take advantage of the wonderful optimization and code
+generators available there.</p>
+<div style="font-family: Arial;" id="sdfootnote1"><small>
+	</small><p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-weight: normal;" align="left"><small>
+	<a class="sdfootnotesym" name="sdfootnote1sym" href="#sdfootnote1anc">1</a>
+	At some point I will add extensions to the language, compatible with
+	the Extended Pascal standard (ISO 10206), but then it will not be
+	called &#8220;P6&#8221;.</small></p><small>
+</small></div></body></html>

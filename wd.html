@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head><meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Toward a Wirth-Dijkstra Language</title></head>
+<body>
+<p style="margin-bottom: 0in; font-weight: normal; font-family: Arial;" align="center"><big><font size="4"><big>Toward
+a Wirth-Dijkstra Language</big></font></big></p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;" align="left">
+<font size="3">My ultimate goal is to
+implement a programming language that incorporates </font><font size="3"><span style="font-weight: normal;">the
+notation that <a href="https://en.wikipedia.org/wiki/Edsger_W._Dijkstra">Edsger
+W. Dijkstra</a> introduced in his book </span></font><a href="https://www.amazon.com/s/ref=nb_sb_ss_i_1_12?url=search-alias=stripbooks&amp;field-keywords=a+discipline+of+programming&amp;sprefix=a+discipline,aps,287&amp;crid=1SMRC247T6KD1"><font size="3"><u><span style="font-weight: normal;">A
+Discipline of Programming</span></u></font></a><font size="3">
+into a proven schema such as Wirth's new, amazingly simple, yet
+powerful, Oberon-07. Dijkstra's book</font><font size="3"><span style="font-weight: normal;">
+introduced 1) guarded commands for handling alternative and iterative
+control structures, 2) active and passive scopes of variables (and
+constants), 3) nomenclature declarations for the controlled
+inheritance of global entities into a block that help to support the
+active and passive scopes, and 4) more explicit controls over
+extending, deleting and updating array elements so that arrays obey
+the active and passive scope rules.</span></font></p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;" align="left">
+<font size="3">I am calling this new
+language WD. (Hopefully, we'll never get up to version 40, because I
+think </font><font size="3"><i>that</i></font><font size="3">
+name is already taken.) With any luck we'll be able to take all the
+programming examples out of Dijkstra's book and directly execute
+them. (And since he proved them correct, they better work!)</font></p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;" align="left">
+<font size="3"><span style="font-weight: normal;"></span></font><font size="3"><span style="font-weight: normal;">Those unfamiliar with
+Dijkstra's revolutionary ideas really need to read his book. An
+elaboration of these ideas that might be an easier read is in <a href="https://en.wikipedia.org/wiki/David_Gries">Prof.
+David Gries</a>' book </span></font><a href="https://www.amazon.com/Science-Programming-Monographs-Computer/dp/0387964800"><font size="3"><u><span style="font-weight: normal;">The
+Science of Programming</span></u></font></a><font size="3"><span style="text-decoration: none;"><span style="font-weight: normal;">.
+</span></span></font><a href="https://en.wikipedia.org/wiki/Niklaus_Wirth"><font size="3"><u><span style="font-weight: normal;">Niklaus
+Wirth</span></u></font></a><font size="3"><span style="text-decoration: none;"><span style="font-weight: normal;">'s
+own &#8220;Programming in ...&#8221; books used to introduce the </span></span></font><a href="https://en.wikipedia.org/wiki/Modula-2"><font size="3"><u><span style="font-weight: normal;">Modula</span></u></font></a><font size="3"><span style="text-decoration: none;"><span style="font-weight: normal;">
+and </span></span></font><a href="https://en.wikipedia.org/wiki/Oberon_%28programming_language%29"><font size="3"><u><span style="font-weight: normal;">Oberon</span></u></font></a><font size="3"><span style="text-decoration: none;"><span style="font-weight: normal;">
+families of programming languages are used in a fashion that are both
+tutorials on the languages being described as well as tutorials on
+how to develop programs with correctness in mind. See also his
+classic book </span></span></font><a href="https://www.amazon.com/Algorithms-Structures-Prentice-Hall-Automatic-Computation/dp/0130224189/ref=sr_1_1?s=books&amp;ie=UTF8&amp;qid=1486234806&amp;sr=1-1&amp;keywords=wirth+algorithms+++data+structures"><font size="3"><u><span style="font-weight: normal;">Algorithms
++ Data Structures = Programs</span></u></font></a><font size="3"><span style="text-decoration: none;"><span style="font-weight: normal;">.</span></span></font></p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-weight: normal; font-family: Arial;" align="left">
+<font size="3">One problem with developing such a compiler is that
+Dijkstra used many symbols that are not in the ASCII character set,
+for example the &#8220;box&#8221; symbol used to separate the guarded
+commands within an &#8220;if&#8221; statement or &#8220;do&#8221; statement. It can
+be simulated by adjacent square brackets: []. Similarly, combinations
+of two ASCII symbols (&#8220;digraphs&#8221;) can be used to form the rest of
+the symbols used in his book. As the file mentioned above suggests,
+an editor which knows about these digraphs might do an automatic job
+of simulating the look of the notation in the book, while maintaining
+a strict &#8220;ASCII-only&#8221; policy for the source input.</font></p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-weight: normal; font-family: Arial;" align="left">
+<font size="3">A second problem is that Dijkstra only intended to
+illustrate that a simple, precise notation could be used to
+illustrate the construction of algorithms whose correctness was
+evident, or could be proven using propositional logic or first-order
+predicate logic. He was not trying to invent a new programming
+language. Therefore, he never bothered to specify what &#8220;modules&#8221;
+or &#8220;procedures&#8221; would look like. His notation is in need of a
+&#8220;wrapper&#8221;. I believe that Niklaus Wirth's latest language,
+<a href="http://oberon07.com/">Oberon-07</a>, would be the ideal
+&#8220;wrapper&#8221;.</font></p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-weight: normal; font-family: Arial;" align="left">
+<font size="3">Some of Dijkstra's influence can be seen already in the
+definition of Wirth's Oberon-07. For instance, Wirth has introduced
+WHILE statements with multiple &#8220;guards&#8221;. Also he has gotten rid
+of the LOOP statement, as well as the EXIT and RETURN statements,
+i.e., anything that smacks of a GOTO, no matter how well disguised.</font></p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-weight: normal; font-family: Arial;" align="left">
+<font size="3">Another way that Dijkstra's influence can be seen is in
+Wirth's definition of the FOR loop. In Pascal, Wirth made the control
+variable become &#8220;undefined&#8221; after the execution of a FOR
+statement (whether or not the loop was ever executed), with the
+single exception that a GOTO out of the loop caused the value of the
+control variable at that point to be defined. This was intended to
+give the compiler writer a lot of latitude in how to implement the
+FOR statement.</font></p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-weight: normal; font-family: Arial;" align="left">
+<font size="3">In Oberon-07, however, Wirth defines the semantics of
+the FOR loop in enough detail that the value of the control variable
+is known with certainty following execution of the FOR statement.
+Thus, Dijkstra's protocol for determining the &#8220;active&#8221; scope of
+this variable is not violated.</font></p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-weight: normal; font-family: Arial;" align="left">
+<font size="3">Anyone who has not taken a close look at Oberon is
+missing out on an important discovery. Wirth is able to duplicate the
+functionality of so-called &#8220;object-oriented&#8221; programming using a
+very few, but powerful, features that begin with his extensible
+record (and pointer) types.</font></p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-weight: normal; font-family: Arial;" align="left">
+<font size="3">Therefore, the overall plan is to use Pascal P6 (with a
+few extensions taken from Extended Pascal: e.g. modules, constant
+expressions, strings) and develop Oberon-07 (using LLVM IR
+as the intermediate language) and then turn that into WD.</font></p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-weight: normal; font-family: Arial;" align="left">
+<font size="3">So the follow-on projects will be 1) doing most or all
+of the stuff&nbsp;<span style="text-decoration: underline;"></span>for <a href="P6-v2.html" target="_blank">P6 v2.0</a>, 2) hooking up Pascal P6 v2.0 to the LLVM tool chain (v3.0),
+3) adding a few useful extensions (P7, v0.9?), 4) modifying that to be an
+Oberon-07 front end (O7, v1.0), and finally 5) implementing a WD front end.</font></p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-weight: normal; font-family: Arial;" align="left">
+<font size="3">One side project will be to develop an IDE/editor that
+makes WD programs look very much like what they look like in &#8220;A
+Discipline of Programming&#8221;. Click <a href="example.html" target="_blank">here</a> for an example..</font></p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-weight: normal; font-family: Arial;" align="left">
+<font size="3">One good reason for tying into the LLVM tool chain is
+have interoperability with other languages used to build system
+software. Modules and utilities implemented in WD could then be
+substituted piece-by-piece with components of, say, Unix or Linux or
+even the LLVM tool chain itself.</font></p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-weight: normal; font-family: Arial;" align="left">
+<font size="3">I dream of an software system that is proven to be
+correct, starting from the hardware specification, and working
+through correctness proofs and assertions in WD! (&#8220;They-ey
+say-ay-ay-ay I'm a dreamer . . . .  But I'm not the only one . . .&#8221;)</font></p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-weight: normal; font-family: Arial;" align="left">
+<font size="3">Another reason to tie into the LLVM tool chain, besides
+piggybacking off all that back-end capability, is to have a really
+aggressive optimizer. Of course, to be a suitable replacement for
+FORTRAN, WD would need to offer number-crunching capabilities. That
+implies implementing the complex data type and having a really
+extensive library of mathematical functions. This could probably be
+done using operator overloading and importable modules, rather than
+having to extend the core language. Also useful would be having an
+automatic parallelization and vectorization capability built into the
+front end to exploit the increasingly multi-core and SIMD processor
+designs.</font></p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-weight: normal; font-family: Arial;" align="left">
+<font size="3">It will take a lot to wean older coders away from the
+&#8220;C&#8221; and Fortran families. They must start using a language that
+promotes &#8220;proof of correctness&#8221;, and trust the compiler to
+generate compact and efficient object code.</font></p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-weight: normal; font-family: Arial;" align="left">
+<font size="3">If <a href="https://en.wikipedia.org/wiki/Ray_Kurzweil">Ray
+Kurzweil</a> is right, then sometime in the mid-to-late 2030s, we'll
+have nanotechnology available to destroy cancer cells and perhaps zap
+blood clots in the brain as soon as they form. If you wind up with a
+network of billions of nanobots running around in your bloodstream,
+wouldn't you rather have them programmed using something more
+reliable than 40-year-old software engineering paradigms?</font></p><p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-weight: normal; font-family: Arial;" align="left"><font size="3">Consider&nbsp;becoming a <a href="https://www.wirth-dijkstra-langs.org/sponsor.html" target="_blank">sponsor</a> of this effort.</font></p></body></html>

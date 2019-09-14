@@ -1,0 +1,246 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head><meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>P5_P6</title></head>
+<body>
+<pre class="western" style="text-align: center;"><font face="Arial, sans-serif" size="+2"><b>From P5 to P6</b></font><br><font face="Arial, sans-serif"><font size="3">by Richard Sprague</font></font></pre><p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">
+As mentioned elsewhere, I was looking for a suitable &#8220;base&#8221; for
+developing a WD compiler, found Scott's P5 sources, and got
+distracted. I just <i>had</i> to fiddle with a
+few things and wound up doing a <i>lot</i> of fiddling with the P5
+sources (BTW, thanks, Scott!), implementing the level 1 &#8220;conformant array parameter&#8221;
+feature among other things, and thus, ending up with P6.</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">I
+agree with Scott regarding the criteria for the compiler, that it 1)
+be ISO 7185-compliant, 2) can compile itself, 3) can compile any
+reasonable standard program, 4) be efficient enough to be used for
+application development (even if a different native-code compiler is
+used for production), and 5) can serve as a starting implementation
+for native-code compilers. I would also add that it would be nice to
+have sources that are clear enough to be suitable for study in a 300-
+or 400- level course in practical compiler construction. (Being
+public-domain, no permissions are required for this.)</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">A
+person with a lot of patience could track the changes from the P4
+sources from Niklaus Wirth and his students, through Scott's P5
+sources, and then to the current P6 sources. Hopefully, readers of
+this source will not be put off by my predilection for capitalizing
+reserved words to set them off from user-defined identifiers (as is
+done in the later Wirth-designed languages Modula and Oberon). Also,
+I found it difficult to understand code that did not follow an
+indentation policy. It is not so important <i>which</i>
+indentation policy is used, as much as <i>having</i>
+one that is applied consistently. So I manually 'pretty-printed' the
+sources of the compiler, pcom.pas, and the interpreter, pint.pas, to
+make them more readable, i.e., readable to me. (See <a href="https://en.wikipedia.org/wiki/David_Gries" target="_blank">David Gries</a>&nbsp;<a href="https://www.amazon.com/Science-Programming-Monographs-Computer/dp/038790641X/ref=mt_hardcover?_encoding=UTF8&amp;me=" target="_blank">The
+Science of Programming</a> (1981) ch. 22.1)</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">The
+biggest (substantive) changes that I made to pcom.pas are:</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">1.
+I completed the change-over from long strings to linked lists of
+short strings, begun by Scott in the P5 source. The scanner
+('insymbol') now generates these linked lists when inputting
+identifiers, numbers, or character strings of any length. So now
+there are no limitations on the lengths of these tokens. There was a
+considerable amount of overhead in going back and forth between large
+character strings and the linked lists that is now eliminated. As a
+result, compilation speed is greatly increased.</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">2.
+The handling of parameters in the program header is regularized. The
+required variables 'input' and 'output' still obey the requirements
+of ISO 7185, of course, but any additional parameters allowed by the
+Standard are for communicating with the external world. Parameters of
+a non-file type are implementation-dependent features, and a
+standard-conforming program may not rely on any interpretation of
+them. However, program parameters of type 'file', are considered to
+be implementation-defined, and a standard-conforming program MAY rely
+on a such a feature. I chose to allow for additional textfiles with a
+flexible and predictable binding to external files to take the place
+of the built-in (and non-standard) 'prr' and 'prd'. This
+interpretation of the Standard enables the compiler to self-compile
+without having to employ any 'extensions' to ISO 7185 to make that
+possible. There are still a couple places where "$ifdef __GPC__"
+is used (in a comment) so that gpc, the GNU Pascal compiler, can be
+used to create the first pcom.exe file. Once a working p-code file is
+produced, those sections can go away, and then you'll hold in the
+palm of your computer the first source that is self-compiling and is
+an ISO 7185 Standard-conforming program. (OK, there are still a few
+errors not detected: one is the 'intval' field in variables of type
+'valu' which is never set, and therefore the variants controlled by
+this field are 'invalid'. We'll get this cleaned up someday.)</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">3.
+Also the inclusion of 'commandline' in the list of program parameters
+will enable a Pascal program to read the command line with which the
+program was invoked. This seemed like a good idea at the time . . . 
+The compiler does not rely on this implementation-dependent feature.</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">4.
+I changed 'lca' back toward the way P4 was doing it. (Sorry, Scott!)
+I don't see the need for the compiler to double the apostrophes
+embedded in the instruction, just so that the interpreter can un-do
+it. If "'doesn't'" doesn't look right then the delimiters
+are now changed to "|", so that "lca 7 'doesn''t'"
+is now "loca 7 |doesn't|". No biggy, but doesn't that look
+better? (And now it's called &#8220;loca&#8221;; it still means "load constant address".)</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">5.
+I implemented a very rudimentary amount of conditional compilation,
+just enough to let gpc (the GNU Pascal compiler) be the first compile
+to get things bootstrapped. It's not standard-conforming; it's rather
+old-fashioned: the better way is to import &amp; export interfaces, à
+la Modula and Oberon, etc. I'll leave the conditional
+compile code in pcom.pas (for bootstrapping purposes), but strip it
+out of the self-compiling p6com.pas.</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">6.
+A certain amount of improvement in code generation is due to a
+nascent 'peephole' optimizer in pcom.pas.</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">7.
+Some of the restrictions on the for statement's control variable are
+enforced, resulting in more of the Pascal Validation Suite tests
+being passed. (See Pascal News, #16.)</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">8.
+Sets are no longer always 32 bytes long (to handle 'SET OF char').
+They are only as long as they need to be. Since you don't know at
+compile-time how many elements a set constructor will use, they still
+use 32 bytes, so as not to break anything that worked in P5.</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">9.
+And, finally, there are now conformant array parameters. Ahem,
+<span style="font-weight: normal;">&#8220;Pascal
+P6, v1.0&#8221; complies with the requirements of level 1 of</span>
+ISO/IEC 7185.</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">And
+now, regarding the interpreter:</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">I
+have made some substantial changes to pint.pas. My philosophy
+regarding interpreters differs from Scott's. He regards the
+interpreter as being an important test case for the Pascal compiler
+itself. And so he adhered to the ISO standard in terms of the source
+language used, and thus pint.pas can be compiled with the pcom
+compiler. It started out that way, of
+course, for the Zürich
+folks because then the challenge was to bootstrap any
+subset of the language at all in order to get things going. Now that
+there is a wider choice of Pascal compilers, the question is raised:
+what should be used to create an executable file for the interpreter.
+And that, in turn, raises the question, can the interpreter benefit from
+extensions in the Pascal dialect that is used to implement the
+interpreter?</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">My
+opinion is that the interpreter should be made to run <i>fast</i>,
+as long as the criterion of portability is not sacrificed.
+Some loops for effecting the transfer of data have been unfolded
+manually, since the GNU Pascal compiler wouldn't do it, even with the
+highest optimization levels specified. This is unfortunate because
+now these code sequences would need to be changed if intsize and
+adrsize were to be defined with other values.</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">But
+the increased interpreter performance makes this change worthwhile.
+Your opinion may differ, of course. The overall speed of the system
+(as measured by the self-compile time) has been substantially
+improved. I think this makes Pascal a much more 'user-friendly'
+language for developing software.</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">Back
+to the question of which compiler to use to compile the interpreter,
+there are two prominent choices that have a following across a
+multitude of architectures and operating systems: GNU Pascal and Free
+Pascal. GNU has the advantage that it will compile pcom.pas;
+therefore, I regard it as preferable overall.</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">The
+biggest, most obvious change is in the capitalization of reserved
+words, as I noted about pcom.pas. This makes the source much more
+readable to me, and hopefully also to you. You will recognize this
+built-in style in the languages Modula-2 and Oberon. The same thing
+goes for the indentation style.</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">The
+biggest substantive change from P5 to P6 is in the re-vamping of
+opcodes. See the Appendix regarding P-codes in the P6-v1-manual.</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">Of
+course, making changes to the underlying P-machine, in terms of sizes
+of integers, pointers and reals, is still quite an undertaking.
+Hopefully, that problem will be tackled in the <a href="P6-v2.html" target="_blank">v2.0</a><a href="p6-v2.html" target="_blank"></a> release. 
+</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">And,
+of course, there are other changes:</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">1.
+I simplified the dynamic allocation routines. There is now a sentinel
+value of 'zero length' at the top of the heap that tells a routine
+that is walking through the chain of blocks to 'stop' when it gets to
+this sentinel. The new strategy is to simply re-use blocks that have
+been allocated previously. There is now no attempt to fragment larger
+blocks or to coalesce smaller blocks back into larger ones. This is
+sub-optimal for the more general allocation problem, but is optimized
+for applications, like compilers, which are constantly using and
+re-using blocks of only a few different fixed lengths. (You want to
+build a fancier heap mechanism than this? Maybe with reference counts
+and other geegaws? Go ahead! That's what these sources are for.)</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">2.
+I find the entire mark stack mechanism to be old-fashioned, and
+somewhat peculiar. Wirth was familiar with the way Burroughs
+implemented Algol 60 on their B5000/B5500 series of computers, and
+adopted the same mechanism for Pascal. I would rather get rid of the
+mark stack altogether, and may do so in v2.0. At least I was able to
+reduce the size of a stack mark from 32 bytes to 20 bytes, and get
+rid of the 'ente' p-code. (Implementing value conformant array
+parameters, by making a copy of the caller's actual argument in the
+callee's frame, required a different way of implementing
+inter-procedural gotos from the method in P5.)</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">3.
+Beware of getInt, putInt, getAddr and putAddr. I was disappointed
+that gpc didn't unfold the loops, even at the highest optimization
+levels. So I unfolded them manually, at the source level. If wordsize
+or adrsize change from 4, then these routines would have to change as
+well. Sorry about that. But I consider the speedup to be worth it.</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">4.
+Just as with pcom.pas, if I didn't understand something, I re-wrote
+it.</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">5.
+The offset and size fields of most opcodes are shortened, as
+described in the manual.</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">6.
+Almost forget: I separated the 'unified' space into a code space and
+a data space. I found that I could get the code for pcom to fit
+easily within 64K bytes. One of the benefits of this is that code
+addresses can be reduced to just 2 bytes (16 bits). I also changed
+code address fields from absolute addresses (indicies, really) to
+pc-relative offsets. This <i>almost</i>
+results in position-independent code. For a larger
+application, the 4-byte code addresses can be restored without much
+difficulty, but I would rather find yet more ways to make the code   
+sizes smaller. Andrew S. Tanenbaum, et al., have invented virtual
+machine instruction sets that are a <i>lot</i>
+more compact.</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">The
+compiler generally needs less than 64K bytes of data to self-compile,
+but I didn't see any point in making data addresses less than 4
+bytes. (Once you go down that road, you then have to make integers
+fit into 16 bits, and before you know it, you are back in the nasty
+old 1980s with itsy-bitsy memory buses!)</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">I
+wish to thank my friend David M. Cooper, one of those computer
+polymaths that CalPoly (Pomona) produces in such abundance. His
+ability to retrieve answers for any question I had, plus his
+enthusiasm and encouragement, greatly accelerated this project.</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">The
+easiest way to compile pcom.pas is with the GNU Pascal Compiler
+(gpc). Hats off to the GNUers! Free Pascal 3.0.0 works well for many
+things (and I love how they integrated gdb, the GNU debugger, into
+their IDE). But it cannot be used to produce the first pcom.exe.
+Trust me. I wasted too much time trying to get that to work. The Free
+Pascal language and implementation is just a bit too non-standard and
+idiosyncratic to use with pcom.pas.</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">Using
+it to compile the interpreter, however, is a different story. It
+would be nice to have an interpreter that could be compiled with
+<i>either</i> GNU Pascal <i>or</i> Free Pascal. Dave is working on
+it. Stay tuned.</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">Send
+all plaudits, brickbats or just plain comments to:</p>
+<div style="text-align: center; font-family: Arial;">richard@wirth-dijkstra-langs.org
+</div><p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">If
+you have any problems at all, send me the smallest code that exhibits
+the problem. Sorry I can't send you a (hexadecimal) dollar for every
+problem you find (like that kid, mentioned in Waychoff's pdf, did for his <a href="https://www.amazon.com/Donald-E.-Knuth/e/B000AQ6O7M" target="_blank">books</a>).</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">Speaking
+of money, the first ten people to send me a million dollars will
+receive . . . oh, never mind.</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">Hey,
+is this a better sleep aid than melatonin, or what?</p>
+<p style="text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-family: Arial;">For
+a look at the anticipated v2.0 release of Pascal P6 click <a href="P6-v2.html" target="_blank">here</a><a href="p6-v2.html"></a>. For a
+preview of the path to getting to WD, click <a href="wd.html">here</a>.</p></body></html>

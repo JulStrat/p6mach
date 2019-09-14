@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <title>EXAMPLE</title>
+    <style>
+
+      p { text-indent: 0.2in; margin-top: 0.2in; margin-bottom: 0in; font-weight: normal; font-family: Arial; font-size: 3; text-align: justify }
+
+
+      table { font-family: arial, sans-serif; margin-left: 1in }
+
+      td, th { border: 1px solid #dddddd; text-align: center; padding: 8px }
+    </style>
+  </head>
+  <body>
+    <p style="margin-top: 0.2in; text-align: center">
+      <font size="4"><b>Example of Dijkstra's Notation</b></font>
+    </p>
+    <p>
+      Let's assume that we have a suitable text editor that is able to take pairs of ASCII characters and display any graphic from any font that we want.
+      We program it to use the symbols Dijkstra used in his book, <i>A Discipline of Programming</i>.
+      And so we start typing in a sample code like the following (taken from page 132):
+    </p>
+    <p>
+        <b>begin virvar </b><i>aq</i>; <b>privar </b><i>i2, i3, i5, x2, x3, x5</i>;
+    </p>
+    <p style="margin-left: 0.55in; margin-top: 0in; text-indent: 0in">
+        <i>aq </i><b>vir
+ </b><i>int </i><b>array</b>:= (<i>1,1</i>); {<i>P0 </i> established}<br>
+        <i>i2 </i><b>vir </b><i>int, i3 </i><b>vir </b><i>int, i5 </i><b>vir </b><i>int</i>:= <i>1, 1, 1</i>;<br>
+        <i>x2 </i><b>vir </b><i>int, x3 </i><b>vir </b><i>int, x5 </i><b>vir </b><i>int</i>:= <i>2, 3, 5</i>; {<i>P1 </i>established}<br>
+        <b>do </b><i>aq.dom ≠1000 </i>→
+    </p>
+    <p style="margin-left: 0.9in; margin-top: 0in; text-indent: 0in; ">
+        <b>if </b><i>x3 ≥ x2 ≤ x5 → aq:hiext(x2)</i><br>
+           []
+     <i>x2 ≥ x3 ≤ x5 → aq:hiext(x3)</i><br>
+           []     <i>x2 ≥ x5 ≤ x3 → aq:hiext(x5)</i><br>
+        <b>fi </b>{<i>aq.dom </i>has been increased by <i>1</i> under invariance of <i>P0</i>};<br>
+        <b>do </b><i>x2 ≤ aq.high → i2:= i2 + 1; x2
+:= 2 * aq(i2) </i><b>od</b>;<br>
+        <b>do </b><i>x3 ≤ aq.high → i3:= i3 + 1; x3
+:= 3 * aq(i3) </i><b>od</b>;<br>
+        <b>do </b><i>x5 ≤ aq.high → i5:= i5 + 1; x5
+:= 5 * aq(i5) </i><b>od</b><br>
+    </p>
+    <p style="margin-left: 1.2in; margin-top: 0in; text-indent: 0in">
+        {<i>P1</i> has been re-established}
+    </p>
+    <p style="margin-left: 0.55in; margin-top: 0in; text-indent: 0in">
+        <b>od</b>
+    </p>
+    <p style="margin-top: 0in">
+        <b>end</b>
+    </p>
+    <p style="text-indent: 0.2in; margin-top: 0.2in; font-weight: normal">
+        I have a feeling that the use of italics to set off identifiers and integer constants is not Dijkstra's
+        idea (but the italicization of proposition names within comments <i>might</i> be).
+        It's probably his book editor thinking that it looks better for publication, so here's the
+        same thing without italicizing the identifier names and integer constants:
+    </p>
+    <p>
+        <b>begin virvar </b>aq; <b>privar </b>i2, i3, i5, x2, x3, x5;
+    </p>
+    <p style="margin-left: 0.55in; margin-top: 0in; text-indent: 0in">
+        aq <b>vir
+ </b>int <b>array</b>:= (1,1); {<i>P0 </i> established}<br>
+        i2 <b>vir </b>int, i3 <b>vir </b>int, i5 <b>vir </b>int:= 1, 1, 1;<br>
+        x2 <b>vir </b>int, x3 <b>vir </b>int, x5 <b>vir </b>int:= 2, 3, 5; {<i>P1 </i>established}<br>
+        <b>do </b>aq.dom ≠1000 →
+    </p>
+    <p style="margin-left: 0.9in; margin-top: 0in; text-indent: 0in; ">
+        <b>if </b>x3 ≥ x2 ≤ x5 → aq:hiext(x2)<br>
+           []
+     x2 ≥ x3 ≤ x5 → aq:hiext(x3)<br>
+           []     x2 ≥ x5 ≤ x3 → aq:hiext(x5)<br>
+        <b>fi </b>{aq.dom has been increased by 1 under invariance of <i>P0</i>};<br>
+        <b>do </b>x2 ≤ aq.high → i2:= i2 + 1; x2
+:= 2 * aq(i2) <b>od</b>;<br>
+        <b>do </b>x3 ≤ aq.high → i3:= i3 + 1; x3
+:= 3 * aq(i3) <b>od</b>;<br>
+        <b>do </b>x5 ≤ aq.high → i5:= i5 + 1; x5
+:= 5 * aq(i5) <b>od</b><br>
+    </p>
+    <p style="margin-left: 1.2in; margin-top: 0in; text-indent: 0in">
+        {<i>P1</i> has been re-established}
+    </p>
+    <p style="margin-left: 0.55in; margin-top: 0in; text-indent: 0in">
+        <b>od</b>
+    </p>
+    <p style="margin-top: 0in">
+        <b>end</b>
+    </p>
+    <p style="text-indent: 0.2in; margin-top: 0.2in">
+        Let's look at some of the substitutions that our prospective IDE would make in the example above.
+        It apparently has a list of reserved words and when encountering them in text, turns them into boldface lower-case words.
+        (This is similar to what the Free Pascal IDE does.)
+        There would be some pairs of characters, or digraphs, that signal substitutions of single symbols from outside the ASCII character set.
+        These would include:
+    </p>
+<table>
+  <tr>
+    <th>Input Digraph</th>
+    <th>Editor Displays</th>
+  </tr>
+  <tr>
+    <td> &lt;= </td>
+    <td><font style="font-size: 13pt" size="3"> ≤ </font></td>
+  </tr>
+  <tr>
+    <td> &gt;= </td>
+    <td><font style="font-size: 13pt" size="3"> ≥ </font></td>
+  </tr>
+  <tr>
+    <td> &lt;&gt; </td>
+    <td><font style="font-size: 13pt" size="3"> ≠</font></td>
+  </tr>
+  <tr>
+    <td> -&gt; </td>
+    <td> → </td>
+  </tr>
+  <tr>
+    <td> {} </td>
+    <td><font face="Symbol">  </font></td>
+  </tr>
+  <tr>
+    <td><font face="Symbol"> ** </font></td>
+    <td><font face="Symbol"> </font></td>
+  </tr>
+</table>
+    <p>
+      Thus WD can have all ASCII input, and still look like the book from within an IDE.
+      (How to make a hard copy with a laser printer is another problem, but probably just as easily solvable.
+      I'm not a print-driver guy.)
+    </p>
+    <p>
+        Another thing that you don't see everyday in programming languages is the following expression (from the above example):
+    </p>
+    <p style="margin-left: 0.9in">
+        x3 <font size="4"> ≥ </font> x2 <font size="4"> ≤ </font> x5
+    </p>
+    <p>
+      <span style="font-style: normal"><span style="font-weight: normal">
+        Pascal, for example, would require something closer to this:
+        “(x3 <font size="4">&gt;= </font>x2) <b>and</b> (x2 <font size="4">&lt;= </font><font size="3"></font>x5)".
+        Dijkstra's version is unambiguous, it makes it clear that x2 is evaluated only once and, finally, it looks <i>mathematical</i>.
+    </p>
+  </body>
+</html>
